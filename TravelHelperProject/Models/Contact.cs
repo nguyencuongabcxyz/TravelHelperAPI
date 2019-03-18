@@ -15,7 +15,6 @@ namespace TravelHelperProject.Models
         public string WhatsApp { get; set; }
         public string Email { get; set; }
         public string Other { get; set; }
-        [Required]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }

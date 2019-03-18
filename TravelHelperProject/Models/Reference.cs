@@ -10,7 +10,7 @@ namespace TravelHelperProject.Models
         public int ReferenceId { get; set; }
         public string Content { get; set; }
         public bool? Status { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public bool? IsDeleted { get; set; }
         public ApplicationUser Sender { get; set; }
         public ApplicationUser Receiver { get; set; }

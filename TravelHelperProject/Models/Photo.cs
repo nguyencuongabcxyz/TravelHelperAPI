@@ -11,10 +11,9 @@ namespace TravelHelperProject.Models
         public int PhotoId { get; set; }
         public string Location { get; set; }
         public string Descripton { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public bool? IsDeleted { get; set; }
         public bool? IsAvatar { get; set; }
-        [Required]
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
     }

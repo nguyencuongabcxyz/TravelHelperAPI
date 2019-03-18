@@ -8,12 +8,12 @@ namespace TravelHelperProject.Models
     public class TravelRequest
     {
         public int TravelRequestId { get; set; }
-        public DateTime ArrivalTime { get; set; }
+        public DateTime? ArrivalTime { get; set; }
 
-        public DateTime DepartureTime { get; set; }
-        public int TravelerNumber { get; set; }
+        public DateTime? DepartureTime { get; set; }
+        public int? TravelerNumber { get; set; }
         public string Message { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public bool? IsAccepted { get; set; }
         public bool? IsDeleted { get; set; }
 

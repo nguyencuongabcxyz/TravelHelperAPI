@@ -9,7 +9,7 @@ namespace TravelHelperProject.Models
     {
         public int FriendId { get; set; }
         public bool? IsDeleted { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public ApplicationUser ApplicationUser1 { get; set; }
         public ApplicationUser ApplicationUser2 { get; set; }
     }

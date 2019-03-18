@@ -17,7 +17,6 @@ namespace TravelHelperProject.Models
         public string AllowedThing { get; set; }
         public string Stuff { get; set; }
         public string AdditionInfo { get; set; }
-        [Required]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }

@@ -9,7 +9,7 @@ namespace TravelHelperProject.Models
     {
         public int MessageId { get; set; }
         public string Content { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
         public ApplicationUser Sender { get; set; }
         public ApplicationUser Receiver { get; set; }
     }

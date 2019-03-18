@@ -12,10 +12,19 @@ namespace TravelHelperProject.Models
     {
         [Column(TypeName = "nvarchar(150)")]
         public string FullName { get; set; }
+        public string Address { get; set; }
+        public bool? Gender { get; set; }
+        public DateTime? Birthday { get; set; }
+        public string Occupation { get; set; }
+        public string FluentLanguage { get; set; }
+        public string LearningLanguage { get; set; }
+        public string About { get; set; }
+        public string Interest { get; set; }
+        public bool? Status { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
-        public DateTime CreateDate { get; set; }
-        public UserProfile UserProfile { get; set; }
+        public DateTime? CreateDate { get; set; }
+
         public Contact Contact { get; set; }
         public Home Home { get; set; }
         public ICollection<Photo> Photos { get; set; }

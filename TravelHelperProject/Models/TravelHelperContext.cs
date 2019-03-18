@@ -26,7 +26,6 @@ namespace TravelHelperProject.Models
         public DbSet<Reference> References { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<TravelRequest> TravelRequests { get; set; }
-        public DbSet<UserProfile> UserProfiles { get; set; }
 
 
     }
