@@ -42,17 +42,13 @@ namespace TravelHelperProject.Controllers
             this._TravelHelperContext.SaveChanges();
             return Ok(applicationUser);
 
-        private TravelHelperContext _travelHelperContext;
-        public UsersController(TravelHelperContext travelHelperContext)
-        {
-            _travelHelperContext = travelHelperContext;
         }
         //GET api/Users/id/publictrips
         [HttpGet]
         [Route("{id}/PublicTrips")]
         public IActionResult GetUserPublicTrip(string id)
         {
-            var user = _travelHelperContext.ApplicationUsers.Where(s => s.Id == id)
+            var user = this._TravelHelperContext.ApplicationUsers.Where(s => s.Id == id)
                 .Include(s => s.PublicTrips)
                 .FirstOrDefault();
             if(user == null)
