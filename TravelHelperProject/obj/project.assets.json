@@ -12943,23 +12943,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Users\\PC\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\TravelHelperProject\\TravelHelperProject\\TravelHelperProject.csproj",
+      "projectUniqueName": "F:\\VS\\TravelHelperAPI\\TravelHelperProject\\TravelHelperProject.csproj",
       "projectName": "TravelHelperProject",
-      "projectPath": "D:\\TravelHelperProject\\TravelHelperProject\\TravelHelperProject.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\TravelHelperProject\\TravelHelperProject\\obj\\",
+      "projectPath": "F:\\VS\\TravelHelperAPI\\TravelHelperProject\\TravelHelperProject.csproj",
+      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+      "outputPath": "F:\\VS\\TravelHelperAPI\\TravelHelperProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
