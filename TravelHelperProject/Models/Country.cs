@@ -8,7 +8,7 @@ namespace TravelHelperProject.Models
     public class Country
     {
         public int  CountryId { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public ICollection<City> States { get; set; }
     }
 }

@@ -64,7 +64,6 @@ namespace TravelHelperProject.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
                         new Claim("UserID",user.Id.ToString()),
-                        new Claim("FullName",user.FullName),
                         new Claim("Role",_userManager.GetRolesAsync(user).Result[0])
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(5),
