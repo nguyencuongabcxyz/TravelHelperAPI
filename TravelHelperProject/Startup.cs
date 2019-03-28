@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using TravelHelperProject.Commons;
 using TravelHelperProject.Models;
 
 namespace TravelHelperProject
@@ -38,7 +39,7 @@ namespace TravelHelperProject
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddDbContext<TravelHelperContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
@@ -72,6 +73,7 @@ namespace TravelHelperProject
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddSingleton<IAddressList, AddressList>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

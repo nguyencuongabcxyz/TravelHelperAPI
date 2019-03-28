@@ -15,6 +15,7 @@ namespace TravelHelperProject.Models
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Friend> Friends { get; set; }
         public DbSet<FriendRequest> FriendRequests { get; set; }

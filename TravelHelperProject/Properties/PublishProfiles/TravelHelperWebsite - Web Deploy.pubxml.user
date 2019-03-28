@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUiOX+fix5UOzk9TmNL8NIAAAAAACAAAAAAAQZgAAAAEAACAAAAA14vLMkjQr7gMg8n0g0PRIEKFh/IJy9YV8wkKTXeMwdAAAAAAOgAAAAAIAACAAAADL1GjkSnXPWsFEYDY/unXFNb1f/lwWCgT5iFIOpUStIYAAAACQvu+ID7IEsSxj1Tu0WccAnu/POfECGPyK3u6aUipGOkMxVfAaXSR6FXN43UJb39DVKaEZos8Cqu+ka19ppKoJkMfaEkOM4zlmdA7RgLJ9fblLVPw+FQMs0wy4nRVxGnhk0DbEEa21Iu2I7VmAKuEjszLcmImn6GpNzEJaw4TbFEAAAAAUAHFV0heHlBqjx/I4l6veNiTL1iVkegftvVhRhP0+3MimKQSsuHN11pr3V0ZC0u9tqP6MYLEIasL7pazLcW3H</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="IdentityConnection">
+      <Value>Data Source=tcp:travelhelperwebsitedbserver.database.windows.net,1433%3bInitial Catalog=TravelHelperWebsite_db%3bUser Id=nguyencuongoc%40travelhelperwebsitedbserver%3bPassword=Abcxyz123</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="TravelHelperProject.Models.TravelHelperContext">
+      <Value>Data Source=tcp:travelhelperwebsitedbserver.database.windows.net,1433%3bInitial Catalog=TravelHelperWebsite_db%3bUser Id=nguyencuongoc%40travelhelperwebsitedbserver%3bPassword=Abcxyz123</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

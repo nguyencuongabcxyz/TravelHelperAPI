@@ -58,21 +58,28 @@ namespace TravelHelperProject.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
+            bool isActive =Boolean.Parse((user.IsActive == null ? true : user.IsActive).ToString());
+            if (!isActive)
+            {
+                return NotFound(new { message = "This user is blocked!" });
+            }
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
                         new Claim("UserID",user.Id.ToString()),
-                        new Claim("Role",_userManager.GetRolesAsync(user).Result[0])
+                        new Claim("Role",_userManager.GetRolesAsync(user).Result[0]),
+                        new Claim("IsActive",(user.IsActive==null?true:user.IsActive).ToString()),
+                        new Claim("IsDeleted",(user.IsDeleted==null?false:user.IsDeleted).ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    Expires = DateTime.UtcNow.AddMinutes(30),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
+                return Ok(new { token,user });
             }
             else
             {

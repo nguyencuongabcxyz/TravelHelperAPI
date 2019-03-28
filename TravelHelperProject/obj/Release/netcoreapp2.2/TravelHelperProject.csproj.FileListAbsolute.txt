@@ -1,0 +1,14 @@
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Release\netcoreapp2.2\TravelHelperProject.deps.json
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Release\netcoreapp2.2\TravelHelperProject.runtimeconfig.json
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Release\netcoreapp2.2\TravelHelperProject.runtimeconfig.dev.json
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Release\netcoreapp2.2\TravelHelperProject.dll
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Release\netcoreapp2.2\TravelHelperProject.pdb
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.csprojAssemblyReference.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.RazorAssemblyInfo.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.RazorAssemblyInfo.cs
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.AssemblyInfo.cs
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.RazorTargetAssemblyInfo.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.dll
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Release\netcoreapp2.2\TravelHelperProject.pdb

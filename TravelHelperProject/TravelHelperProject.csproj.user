@@ -10,5 +10,6 @@
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_DbContextTypeFullName>TravelHelperProject.Models.TravelHelperContext</WebStackScaffolding_DbContextTypeFullName>
+    <NameOfLastUsedPublishProfile>TravelHelperWebsite - Web Deploy1</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

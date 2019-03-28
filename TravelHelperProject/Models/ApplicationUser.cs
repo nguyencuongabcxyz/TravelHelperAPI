@@ -19,6 +19,7 @@ namespace TravelHelperProject.Models
         public string FluentLanguage { get; set; }
         public string LearningLanguage { get; set; }
         public string About { get; set; }
+        public string AvatarLocation { get; set; }
         public string Interest { get; set; }
         public bool? Status { get; set; }
         public bool? IsActive { get; set; }

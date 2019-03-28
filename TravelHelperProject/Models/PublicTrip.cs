@@ -16,7 +16,9 @@ namespace TravelHelperProject.Models
         public string Description { get; set; }
         public DateTime? CreateDate { get; set; }
         public bool? IsDeleted { get; set; }
+        public bool IsExpired { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUser User { get; set; }
+
     }
 }

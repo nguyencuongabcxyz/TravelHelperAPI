@@ -12,3 +12,17 @@ D:\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperP
 D:\TravelHelperProject\TravelHelperProject\bin\Debug\netcoreapp2.2\TravelHelperProject.pdb
 D:\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.dll
 D:\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.pdb
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Debug\netcoreapp2.2\TravelHelperProject.deps.json
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Debug\netcoreapp2.2\TravelHelperProject.runtimeconfig.json
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Debug\netcoreapp2.2\TravelHelperProject.runtimeconfig.dev.json
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Debug\netcoreapp2.2\TravelHelperProject.dll
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\bin\Debug\netcoreapp2.2\TravelHelperProject.pdb
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.csprojAssemblyReference.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.RazorAssemblyInfo.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.RazorAssemblyInfo.cs
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.AssemblyInfo.cs
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.RazorTargetAssemblyInfo.cache
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.dll
+C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.pdb

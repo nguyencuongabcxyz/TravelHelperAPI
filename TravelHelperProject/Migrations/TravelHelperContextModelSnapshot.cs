@@ -237,11 +237,11 @@ namespace TravelHelperProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Name");
+                    b.Property<string>("Name");
 
                     b.HasKey("CountryId");
 
-                    b.ToTable("Country");
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("TravelHelperProject.Models.Friend", b =>
@@ -426,6 +426,8 @@ namespace TravelHelperProject.Migrations
 
                     b.Property<bool?>("IsDeleted");
 
+                    b.Property<bool>("IsExpired");
+
                     b.Property<int?>("TravelerNumber");
 
                     b.HasKey("PublicTripId");
@@ -532,6 +534,8 @@ namespace TravelHelperProject.Migrations
 
                     b.Property<string>("Address");
 
+                    b.Property<string>("AvatarLocation");
+
                     b.Property<DateTime?>("Birthday");
 
                     b.Property<DateTime?>("CreateDate");
@@ -606,7 +610,7 @@ namespace TravelHelperProject.Migrations
             modelBuilder.Entity("TravelHelperProject.Models.City", b =>
                 {
                     b.HasOne("TravelHelperProject.Models.Country", "Country")
-                        .WithMany("States")
+                        .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

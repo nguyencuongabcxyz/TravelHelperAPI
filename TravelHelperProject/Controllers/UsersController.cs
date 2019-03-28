@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace TravelHelperProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class UsersController : ControllerBase
     {
 
@@ -22,12 +24,65 @@ namespace TravelHelperProject.Controllers
         {
             this._TravelHelperContext = travelHelperContext;
         }
-
-        [HttpPut]
-        [Route("{id}")]
-        public IActionResult PutUserProfile(string id, ApplicationUser applicationUser)
+        //Untested 
+        //GET api/Users
+        [HttpGet]
+        public IActionResult GetUserProfile()
         {
-            var user = this._TravelHelperContext.ApplicationUsers.Where(s => s.Id == id).FirstOrDefault();
+            string userId;
+            try
+            {
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+            var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId)
+                .Include(s => s.PublicTrips)
+                .Include(s => s.Photos)
+                .FirstOrDefault();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(user);
+            }
+        }
+        //Untested
+        //GET api/User/id
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetUserProfile(string id)
+        {
+            var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == id)
+                .Include(s => s.PublicTrips).FirstOrDefault();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(user);
+            }
+        }
+        //Tested 
+        //PUT api/Users
+        [HttpPut]
+        public IActionResult PutUserProfile(ApplicationUser applicationUser)
+        {
+            string userId;
+            try
+            {
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+            var user = this._TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId).FirstOrDefault();
 
             user.FullName = applicationUser.FullName;
             user.Address = applicationUser.Address;
@@ -40,26 +95,45 @@ namespace TravelHelperProject.Controllers
             user.Interest = applicationUser.Interest;
             user.Status = applicationUser.Status;
             this._TravelHelperContext.SaveChanges();
-            return Ok(applicationUser);
+            //var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId).FirstOrDefault();
+            //applicationUser.Id = userId;
+            //_TravelHelperContext.Entry(user).CurrentValues.SetValues(applicationUser);
+            //_TravelHelperContext.SaveChanges();
+            return Ok(user);
 
         }
-        //GET api/Users/id/publictrips
+        //Tested
+        //GET api/Users/publictrips
         [HttpGet]
-        [Route("{id}/PublicTrips")]
-        public IActionResult GetUserPublicTrip(string id)
+        [Route("PublicTrips")]
+        public IActionResult GetUserPublicTrip()
         {
-            var user = this._TravelHelperContext.ApplicationUsers.Where(s => s.Id == id)
-                .Include(s => s.PublicTrips)
-                .FirstOrDefault();
-            if(user == null)
+            string userId;
+            try
             {
-                return BadRequest();
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
             }
-            else
+            catch
             {
-                return Ok(user);
+                return Unauthorized();
             }
-
+            var publicTrips = this._TravelHelperContext.PublicTrips.Where(s => s.ApplicationUserId == userId && s.IsDeleted!=true)
+                .Include(s => s.User).ToList();
+            if (publicTrips.Count==0)
+            {
+                return NoContent();
+            }
+            return Ok(publicTrips);
+        }
+        //Tested
+        //GET: api/Users/Search?address=address
+        [HttpGet]
+        [Route("Search")]
+        public IActionResult GetUserByAddress(string address)
+        {
+            var users = this._TravelHelperContext.ApplicationUsers.Where(s => s.Address.Contains(address)).ToList();
+        
+            return Ok(users);
         }
     }
 }
