@@ -39,7 +39,7 @@ namespace TravelHelperProject.Controllers
                 return Unauthorized();
             }
             var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId)
-                .Include(s => s.PublicTrips)
+                .Include("PublicTrips")
                 .Include(s => s.Photos)
                 .FirstOrDefault();
             if (user == null)
