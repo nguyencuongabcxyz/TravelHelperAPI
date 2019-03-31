@@ -58,13 +58,13 @@ namespace TravelHelperProject.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            bool isActive =Boolean.Parse((user.IsActive == null ? true : user.IsActive).ToString());
-            if (!isActive)
-            {
-                return NotFound(new { message = "This user is blocked!" });
-            }
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
+                bool isActive = Boolean.Parse((user.IsActive == null ? true : user.IsActive).ToString());
+                if (!isActive)
+                {
+                    return NotFound(new { message = "This user is blocked!" });
+                }
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[] {

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using TravelHelperProject.Models;
+using TravelHelperProject.Services;
+using TravelHelperProject.ViewModels;
 
 namespace TravelHelperProject.Controllers
 {
@@ -17,31 +19,24 @@ namespace TravelHelperProject.Controllers
     //[Authorize]
     public class UsersController : ControllerBase
     {
+        private IUserService _userService;
 
-        private TravelHelperContext _TravelHelperContext;
-
-        public UsersController(TravelHelperContext travelHelperContext)
+        public UsersController( IUserService userService)
         {
-            this._TravelHelperContext = travelHelperContext;
+            this._userService = userService;
         }
         //Untested 
         //GET api/Users
         [HttpGet]
         public IActionResult GetUserProfile()
         {
-            string userId;
-            try
-            {
-                userId = User.Claims.First(c => c.Type == "UserID").Value;
-            }
-            catch
+            string userId = GetUserId();
+            if(userId == "error")
             {
                 return Unauthorized();
             }
-            var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId)
-                .Include("PublicTrips")
-                .Include(s => s.Photos)
-                .FirstOrDefault();
+            string[] includes = { "PublicTrips", "Photos", "Home" };
+            var user = _userService.GetSingleByCondition(s => s.Id == userId, includes);
             if (user == null)
             {
                 return NotFound();
@@ -57,8 +52,8 @@ namespace TravelHelperProject.Controllers
         [Route("{id}")]
         public IActionResult GetUserProfile(string id)
         {
-            var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == id)
-                .Include(s => s.PublicTrips).FirstOrDefault();
+            string[] includes = { "PublicTrips", "Photos", "Home" };
+            var user = _userService.GetSingleByCondition(s => s.Id == id, includes);
             if (user == null)
             {
                 return NotFound();
@@ -68,62 +63,32 @@ namespace TravelHelperProject.Controllers
                 return Ok(user);
             }
         }
-        //Tested 
+        //Tested
         //PUT api/Users
         [HttpPut]
-        public IActionResult PutUserProfile(ApplicationUser applicationUser)
+        public IActionResult PutUserProfile(ProfileViewModel profile)
         {
-            string userId;
-            try
-            {
-                userId = User.Claims.First(c => c.Type == "UserID").Value;
-            }
-            catch
+            string userId = GetUserId();
+            if (userId == "error")
             {
                 return Unauthorized();
             }
-            var user = this._TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId).FirstOrDefault();
+            var user = _userService.GetSingleByCondition(s => s.Id == userId, null);
 
-            user.FullName = applicationUser.FullName;
-            user.Address = applicationUser.Address;
-            user.Gender = applicationUser.Gender;
-            user.Birthday = applicationUser.Birthday;
-            user.Occupation = applicationUser.Occupation;
-            user.FluentLanguage = applicationUser.FluentLanguage;
-            user.LearningLanguage = applicationUser.LearningLanguage;
-            user.About = applicationUser.About;
-            user.Interest = applicationUser.Interest;
-            user.Status = applicationUser.Status;
-            this._TravelHelperContext.SaveChanges();
-            //var user = _TravelHelperContext.ApplicationUsers.Where(s => s.Id == userId).FirstOrDefault();
-            //applicationUser.Id = userId;
-            //_TravelHelperContext.Entry(user).CurrentValues.SetValues(applicationUser);
-            //_TravelHelperContext.SaveChanges();
+            user.FullName = profile.FullName;
+            user.Address = profile.Address;
+            user.Gender = profile.Gender;
+            user.Birthday = profile.Birthday;
+            user.Occupation = profile.Occupation;
+            user.FluentLanguage = profile.FluentLanguage;
+            user.LearningLanguage = profile.LearningLanguage;
+            user.About = profile.About;
+            user.Interest = profile.Interest;
+            user.Status = profile.Status;
+            _userService.Update(user);
+            _userService.SaveChanges();
             return Ok(user);
 
-        }
-        //Tested
-        //GET api/Users/publictrips
-        [HttpGet]
-        [Route("PublicTrips")]
-        public IActionResult GetUserPublicTrip()
-        {
-            string userId;
-            try
-            {
-                userId = User.Claims.First(c => c.Type == "UserID").Value;
-            }
-            catch
-            {
-                return Unauthorized();
-            }
-            var publicTrips = this._TravelHelperContext.PublicTrips.Where(s => s.ApplicationUserId == userId && s.IsDeleted!=true)
-                .Include(s => s.User).ToList();
-            if (publicTrips.Count==0)
-            {
-                return NoContent();
-            }
-            return Ok(publicTrips);
         }
         //Tested
         //GET: api/Users/Search?address=address
@@ -131,9 +96,38 @@ namespace TravelHelperProject.Controllers
         [Route("Search")]
         public IActionResult GetUserByAddress(string address)
         {
-            var users = this._TravelHelperContext.ApplicationUsers.Where(s => s.Address.Contains(address)).ToList();
-        
+            var users = _userService.GetMultiByCondition(s => s.Address.Contains(address), null);
             return Ok(users);
+        }
+
+        //Untested
+        //PUT: api/Users/Avatar? avatar = avatar
+        [HttpPut]
+        [Route("Avatar")]
+        public IActionResult PutUserAvatar(string avatar)
+        {
+            string userId = GetUserId();
+            if (userId == "error")
+            {
+                return Unauthorized();
+            }
+            var user = _userService.GetSingleByCondition(s => s.Id == userId, null);
+            user.AvatarLocation = avatar;
+            return Ok();
+        }
+        [NonAction]
+        public string GetUserId()
+        {
+            string userId;
+            try
+            {
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
+            }
+            catch
+            {
+                return "error";
+            }
+            return userId;
         }
     }
 }

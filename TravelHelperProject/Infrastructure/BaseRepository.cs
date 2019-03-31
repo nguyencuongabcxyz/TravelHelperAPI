@@ -40,6 +40,10 @@ namespace TravelHelperProject.DataAccess
         {
 
         }
+        public T GetSingleById(int id)
+        {
+            return _dbSet.Find(id);
+        }
         public virtual T GetSingleByCondition(Expression<Func<T,bool>> expression,string[] includes)
         {
             if(includes!=null && includes.Count() > 0)

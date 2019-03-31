@@ -8,6 +8,5 @@ namespace TravelHelperProject.Models
     public class CommonModel
     {
         public bool IsDeleted { get; set; }
-        public bool IsActive { get; set; }
     }
 }

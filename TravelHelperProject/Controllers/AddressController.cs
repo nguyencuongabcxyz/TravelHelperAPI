@@ -14,11 +14,9 @@ namespace TravelHelperProject.Controllers
     [ApiController]
     public class AddressController : ControllerBase
     {
-        private TravelHelperContext _travelHelperContext;
         private IAddressList _addressList;
-        public AddressController(TravelHelperContext travelHelperContext, IAddressList addressList)
+        public AddressController(IAddressList addressList)
         {
-            _travelHelperContext = travelHelperContext;
             _addressList = addressList;
         }
         //GET api/Address/address

@@ -13,14 +13,15 @@ namespace TravelHelperProject.Services
     {
         void Add(T entity);
         void Update(T entity);
-        void DeleteSingle(T entity);
+        //void DeleteSingle(T entity);
         void SaveChanges();
+        T GetSingleById(int id);
         T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes);
         IEnumerable<T> GetAll(string[] includes);
         IEnumerable<T> GetMultiByCondition(Expression<Func<T, bool>> expression, string[] includes);
     }
     public class CommonService<T,R>: ICommonService<T> 
-        where T: CommonModel
+        where T: class 
         where R: IBaseRepository<T>
     {
         private R _repository;
@@ -38,14 +39,18 @@ namespace TravelHelperProject.Services
         {
             _repository.Update(entity);
         }
-        public void DeleteSingle(T entity)
-        {
-            entity.IsDeleted = true;
-            _repository.Update(entity);
-        }
+        //public void DeleteSingle(T entity)
+        //{
+        //    entity.IsDeleted = true;
+        //    _repository.Update(entity);
+        //}
         public void SaveChanges()
         {
             _unitOfWork.Commit();
+        }
+        public T GetSingleById(int id)
+        {
+            return _repository.GetSingleById(id);
         }
         public T GetSingleByCondition(Expression<Func<T,bool>> expression,string [] includes)
         {

@@ -16,7 +16,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using TravelHelperProject.Commons;
+using TravelHelperProject.DataAccess;
+using TravelHelperProject.Infrastructure;
 using TravelHelperProject.Models;
+using TravelHelperProject.Repositorys;
+using TravelHelperProject.Services;
 
 namespace TravelHelperProject
 {
@@ -74,6 +78,14 @@ namespace TravelHelperProject
                 };
             });
             services.AddSingleton<IAddressList, AddressList>();
+            services.AddScoped<IDbFactory, DbFactory>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPublicTripRepository, PublicTripRepository>();
+            services.AddScoped<IPublicTripService, PublicTripService>();
+            services.AddScoped<IHomeRepository, HomeRepository>();
+            services.AddScoped<IHomeService, HomeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

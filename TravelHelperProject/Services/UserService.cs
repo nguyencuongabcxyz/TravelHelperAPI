@@ -10,7 +10,6 @@ namespace TravelHelperProject.Services
 {
     public interface IUserService: ICommonService<ApplicationUser>
     {
-
     }
     public class UserService: CommonService<ApplicationUser,IUserRepository>, IUserService
     {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TravelHelperProject.Models;
+using TravelHelperProject.Services;
 
 namespace TravelHelperProject.Controllers
 {
@@ -13,10 +14,10 @@ namespace TravelHelperProject.Controllers
     [ApiController]
     public class PublicTripsController : ControllerBase
     {
-        private TravelHelperContext _travelHelperContext;
-        public PublicTripsController(TravelHelperContext travelHelperContext)
+        private IPublicTripService _publicTripService;
+        public PublicTripsController(IPublicTripService publicTripService)
         {
-            _travelHelperContext = travelHelperContext;
+            _publicTripService = publicTripService;
         }
         //TESTED
         //GET api/Publictrips
@@ -32,16 +33,9 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var publicTrips = _travelHelperContext.PublicTrips.Where(s => s.ApplicationUserId != userId && s.IsDeleted != true)
-                .Include(s => s.User).ToList();
-            if (publicTrips.Count == 0)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return Ok(publicTrips);
-            }
+            string[] includes = { "User" };
+            var publicTrips = _publicTripService.GetMultiByCondition(s => s.ApplicationUserId != userId && s.IsDeleted != true, includes).ToList();
+            return Ok(publicTrips);
         }
         //TESTED
         //GET api/Publictrips/Search?destination=destination
@@ -58,16 +52,9 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var publicTrips = _travelHelperContext.PublicTrips.Where(s => s.ApplicationUserId != userId && s.Destination == destination && s.IsDeleted != true)
-                .Include(s => s.User).ToList();
-            if (publicTrips.Count == 0)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return Ok(publicTrips);
-            }
+            string[] includes = { "User" };
+            var publicTrips = _publicTripService.GetMultiByCondition(s => s.ApplicationUserId != userId && s.Destination.Contains(destination) && s.IsDeleted != true, includes);
+            return Ok(publicTrips);
         }
         //Untested on server
         //TESTED
@@ -88,8 +75,8 @@ namespace TravelHelperProject.Controllers
             publicTrip.CreateDate = DateTime.Now;    
             try
             {
-                _travelHelperContext.PublicTrips.Add(publicTrip);
-                _travelHelperContext.SaveChanges();
+                _publicTripService.Add(publicTrip);
+                _publicTripService.SaveChanges();
                 return Ok(publicTrip);
             }
             catch
@@ -103,7 +90,7 @@ namespace TravelHelperProject.Controllers
         [Route("{id}")]
         public IActionResult GetPublicTrip(int id)
         {
-            var publicTrip = _travelHelperContext.PublicTrips.Find(id);
+            var publicTrip = _publicTripService.GetSingleById(id);
             if (publicTrip == null)
             {
                 return NotFound();
@@ -128,7 +115,8 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var publicTripById = _travelHelperContext.PublicTrips.Where(s => s.PublicTripId == id).FirstOrDefault();
+            //var publicTripById = _travelHelperContext.PublicTrips.Where(s => s.PublicTripId == id).FirstOrDefault();
+            var publicTripById = _publicTripService.GetSingleByCondition(s => s.PublicTripId == id, null);
             if (publicTripById.ApplicationUserId != userId)
             {
                 return Unauthorized(new { message = "Not allow to update other user's public trip!" });
@@ -142,9 +130,33 @@ namespace TravelHelperProject.Controllers
             publicTripById.Description = publicTrip.Description;
             publicTripById.TravelerNumber = publicTrip.TravelerNumber;
             publicTripById.Destination = publicTrip.Destination;
-            _travelHelperContext.SaveChanges();
+            _publicTripService.Update(publicTripById);
+            _publicTripService.SaveChanges();
             return Ok(publicTripById);
         }
-
+        //tested 
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeletePublicTrip(int id)
+        {
+            string userId;
+            try
+            {
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+            var publicTripById = _publicTripService.GetSingleByCondition(s => s.PublicTripId == id, null);
+            if (publicTripById.ApplicationUserId != userId)
+            {
+                return Unauthorized(new { message = "Not allow to delete other user's public trip!" });
+            }
+            publicTripById.IsDeleted = true;
+            _publicTripService.Update(publicTripById);
+            _publicTripService.SaveChanges();
+            return NoContent();
+        }
     }
 }

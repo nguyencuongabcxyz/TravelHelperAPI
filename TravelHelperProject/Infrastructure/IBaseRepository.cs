@@ -12,6 +12,7 @@ namespace TravelHelperProject.DataAccess
         void Update(T entity);
         void Remove(T entity);
         T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes);
+        T GetSingleById(int id);
         IEnumerable<T> GetAll(string[] includes);
         IEnumerable<T> GetMultiByCondition(Expression<Func<T, bool>> expression, string[] includes);
     }
