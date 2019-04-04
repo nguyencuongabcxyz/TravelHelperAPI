@@ -73,7 +73,7 @@ namespace TravelHelperProject.Controllers
                         new Claim("IsActive",(user.IsActive==null?true:user.IsActive).ToString()),
                         new Claim("IsDeleted",(user.IsDeleted==null?false:user.IsDeleted).ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddMinutes(30),
+                    Expires = DateTime.UtcNow.AddMinutes(100),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();

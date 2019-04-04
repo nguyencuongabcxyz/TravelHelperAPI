@@ -37,6 +37,24 @@ namespace TravelHelperProject.Controllers
             }
             string[] includes = { "PublicTrips", "Photos", "Home" };
             var user = _userService.GetSingleByCondition(s => s.Id == userId, includes);
+            // Remove deleted publictrips
+            List<int> index = new List<int>();
+            foreach(PublicTrip p in user.PublicTrips.ToList())
+            {
+                if(p.IsDeleted == true)
+                {
+                    index.Add(user.PublicTrips.ToList().IndexOf(p));
+                }
+            }
+            List<PublicTrip> publicTrips = new List<PublicTrip>();
+            foreach(int i in index)
+            {
+                publicTrips.Add(user.PublicTrips.ToList()[i]);
+            }
+            foreach (PublicTrip i in publicTrips)
+            {
+                user.PublicTrips.Remove(i);
+            }
             if (user == null)
             {
                 return NotFound();
@@ -54,6 +72,24 @@ namespace TravelHelperProject.Controllers
         {
             string[] includes = { "PublicTrips", "Photos", "Home" };
             var user = _userService.GetSingleByCondition(s => s.Id == id, includes);
+            // Remove deleted publictrips
+            List<int> index = new List<int>();
+            foreach (PublicTrip p in user.PublicTrips.ToList())
+            {
+                if (p.IsDeleted == true)
+                {
+                    index.Add(user.PublicTrips.ToList().IndexOf(p));
+                }
+            }
+            List<PublicTrip> publicTrips = new List<PublicTrip>();
+            foreach (int i in index)
+            {
+                publicTrips.Add(user.PublicTrips.ToList()[i]);
+            }
+            foreach (PublicTrip i in publicTrips)
+            {
+                user.PublicTrips.Remove(i);
+            }
             if (user == null)
             {
                 return NotFound();

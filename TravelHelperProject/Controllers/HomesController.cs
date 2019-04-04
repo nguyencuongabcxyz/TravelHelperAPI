@@ -66,8 +66,8 @@ namespace TravelHelperProject.Controllers
             homeById.SleepingDescription = home.SleepingDescription;
             homeById.Stuff = home.Stuff;
             homeById.TransportationAccess = home.TransportationAccess;
-            home.AllowedThing = home.AllowedThing;
-            home.AdditionInfo = home.AdditionInfo;
+            homeById.AllowedThing = home.AllowedThing;
+            homeById.AdditionInfo = home.AdditionInfo;
             _homeService.Update(homeById);
             _homeService.SaveChanges();
             return Ok(homeById);

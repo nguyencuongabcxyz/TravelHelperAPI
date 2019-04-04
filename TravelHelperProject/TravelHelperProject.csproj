@@ -1,20 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>c5123409-4e73-45d9-8a48-978fe81a0ec0</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="BusinessLogic\**" />
     <Compile Remove="ViewModel\**" />
+    <Compile Remove="wwwroot\Images\quankun.jpg\**" />
     <Content Remove="BusinessLogic\**" />
     <Content Remove="ViewModel\**" />
+    <Content Remove="wwwroot\Images\quankun.jpg\**" />
     <EmbeddedResource Remove="BusinessLogic\**" />
     <EmbeddedResource Remove="ViewModel\**" />
+    <EmbeddedResource Remove="wwwroot\Images\quankun.jpg\**" />
     <None Remove="BusinessLogic\**" />
     <None Remove="ViewModel\**" />
+    <None Remove="wwwroot\Images\quankun.jpg\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\quankun.jpg" />
   </ItemGroup>
 
   <ItemGroup>

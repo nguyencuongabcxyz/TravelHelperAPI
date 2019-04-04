@@ -90,7 +90,7 @@ namespace TravelHelperProject.Controllers
         [Route("{id}")]
         public IActionResult GetPublicTrip(int id)
         {
-            var publicTrip = _publicTripService.GetSingleById(id);
+            var publicTrip = _publicTripService.GetSingleByCondition(s => s.PublicTripId == id && s.IsDeleted != true, null);
             if (publicTrip == null)
             {
                 return NotFound();
@@ -115,8 +115,7 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            //var publicTripById = _travelHelperContext.PublicTrips.Where(s => s.PublicTripId == id).FirstOrDefault();
-            var publicTripById = _publicTripService.GetSingleByCondition(s => s.PublicTripId == id, null);
+            var publicTripById = _publicTripService.GetSingleByCondition(s => s.PublicTripId == id && s.IsDeleted!=true, null);
             if (publicTripById.ApplicationUserId != userId)
             {
                 return Unauthorized(new { message = "Not allow to update other user's public trip!" });
