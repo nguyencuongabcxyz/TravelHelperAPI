@@ -9,6 +9,7 @@ namespace TravelHelperProject.Models
     public class Photo
     {
         public int PhotoId { get; set; }
+        public string Name { get; set; }
         public string Location { get; set; }
         public string Descripton { get; set; }
         public DateTime? CreateDate { get; set; }

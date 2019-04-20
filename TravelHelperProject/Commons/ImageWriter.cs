@@ -16,7 +16,17 @@ namespace TravelHelperProject.Commons
                 return await WriteFile(file);
             }
 
-            return "Invalid image file";
+            return "failed";
+        }
+        public bool DeleteImage(string fileName)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", fileName);
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+            File.Delete(path);
+            return true;
         }
 
         /// <summary>
@@ -32,7 +42,7 @@ namespace TravelHelperProject.Commons
                 file.CopyTo(ms);
                 fileBytes = ms.ToArray();
             }
-
+            var x = WriterHelper.GetImageFormat(fileBytes);
             return WriterHelper.GetImageFormat(fileBytes) != WriterHelper.ImageFormat.unknown;
         }
 

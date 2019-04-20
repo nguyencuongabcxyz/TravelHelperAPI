@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TravelHelperProject.Commons;
 using TravelHelperProject.Models;
 
 namespace TravelHelperProject.Controllers
@@ -22,12 +23,14 @@ namespace TravelHelperProject.Controllers
         private SignInManager<ApplicationUser> _signInManager;
         private RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationSetting _appSettings;
-        public ApplicationUserController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSetting> appSettings)
+        private IBaseUrlHelper _baseUrlHelper;
+        public ApplicationUserController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSetting> appSettings, IBaseUrlHelper baseUrlHelper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _roleManager = roleManager;
+            _baseUrlHelper = baseUrlHelper;
         }
         [HttpPost]
         [Route("Register")]
@@ -38,6 +41,7 @@ namespace TravelHelperProject.Controllers
                 UserName = model.UserName,
                 Email = model.Email,
                 FullName = model.FullName,
+                AvatarLocation = _baseUrlHelper.GetBaseUrl() + "/Images/defaultAvatar.png",
             };
             var role = new IdentityRole("User");
             await _roleManager.CreateAsync(role);

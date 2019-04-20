@@ -9,5 +9,6 @@ namespace TravelHelperProject.Commons
     public interface IImageWriter
     {
         Task<string> UploadImage(IFormFile file);
+        bool DeleteImage(string fileName);
     }
 }

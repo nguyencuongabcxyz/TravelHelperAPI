@@ -45,7 +45,7 @@ namespace TravelHelperProject
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddDbContext<TravelHelperContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
@@ -79,6 +79,8 @@ namespace TravelHelperProject
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IBaseUrlHelper, BaseUrlHelper>();
             services.AddSingleton<IAddressList, AddressList>();
             services.AddScoped<IDbFactory, DbFactory>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -87,9 +89,13 @@ namespace TravelHelperProject
             services.AddScoped<IPublicTripRepository, PublicTripRepository>();
             services.AddScoped<IPublicTripService, PublicTripService>();
             services.AddScoped<IHomeRepository, HomeRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IHomeService, HomeService>();
-            services.AddTransient<IImageHandler, ImageHandler>();
+            services.AddScoped<IReferenceRepository, ReferenceRepository>();
+            services.AddScoped<IReferenceService, ReferenceService>();
+            services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IImageWriter, ImageWriter>();
+            services.AddTransient<IImageFileService, ImageFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

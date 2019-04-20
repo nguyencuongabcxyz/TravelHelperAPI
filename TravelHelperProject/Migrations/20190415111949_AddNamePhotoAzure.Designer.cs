@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelHelperProject.Models;
 
 namespace TravelHelperProject.Migrations
 {
     [DbContext(typeof(TravelHelperContext))]
-    partial class TravelHelperContextModelSnapshot : ModelSnapshot
+    [Migration("20190415111949_AddNamePhotoAzure")]
+    partial class AddNamePhotoAzure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
