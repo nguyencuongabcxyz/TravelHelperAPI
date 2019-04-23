@@ -15,5 +15,6 @@ namespace TravelHelperProject.DataAccess
         T GetSingleById(int id);
         IEnumerable<T> GetAll(string[] includes);
         IEnumerable<T> GetMultiByCondition(Expression<Func<T, bool>> expression, string[] includes);
+        IEnumerable<T> GetMultiDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, string[] includes);
     }
 }

@@ -108,10 +108,10 @@ namespace TravelHelperProject.Controllers
         }
 
         //Untested
-        //PUT: api/Users/Avatar
-        [HttpPut]
+        //POST: api/Users/Avatar
+        [HttpPost]
         [Route("Avatar")]
-        public async Task<IActionResult> PutUserAvatar([FromForm] IFormFile file)
+        public async Task<IActionResult> PostUserAvatar([FromForm] IFormFile file)
         {
             string userId = GetUserId();
             if (userId == "error")
@@ -164,7 +164,7 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var publicTrips = _publicTripService.GetMultiByCondition(s => s.ApplicationUserId == userId && s.IsDeleted != true, null);
+            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId == userId && s.IsDeleted != true, s => s.ArrivalDate, null).ToList();
             return Ok(publicTrips);
 
         }
@@ -172,7 +172,7 @@ namespace TravelHelperProject.Controllers
         [Route("{id}/PublicTrips")]
         public IActionResult GetUserPublicTrips(string id)
         {
-            var publicTrips = _publicTripService.GetMultiByCondition(s => s.ApplicationUserId == id && s.IsDeleted != true, null);
+            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId ==id && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate, DateTime.Now) >= 0 , s => s.ArrivalDate, null).ToList();
             return Ok(publicTrips);
         }
         [HttpGet]

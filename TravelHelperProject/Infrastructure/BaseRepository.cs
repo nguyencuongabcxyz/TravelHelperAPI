@@ -83,5 +83,18 @@ namespace TravelHelperProject.DataAccess
             }
             return TravelHelperContext.Set<T>().Where<T>(expression).AsQueryable();
         }
+        public virtual IEnumerable<T> GetMultiDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, string[] includes)
+        {
+            if (includes != null && includes.Count() > 0)
+            {
+                var query = TravelHelperContext.Set<T>().Include(includes.First());
+                foreach (string i in includes.Skip(1))
+                {
+                    query = query.Include(i);
+                }
+                return query.Where<T>(expression).OrderByDescending(property).AsQueryable();
+            }
+            return TravelHelperContext.Set<T>().OrderByDescending(property).Where<T>(expression).AsQueryable();
+        }
     }
 }

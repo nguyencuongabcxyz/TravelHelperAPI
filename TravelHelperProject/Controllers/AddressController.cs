@@ -34,6 +34,11 @@ namespace TravelHelperProject.Controllers
             }
             return Ok(listAddress);
         }
+        [HttpGet]
+        public IActionResult GetAddress()
+        {
+            return Ok(_addressList.GetListAddresses());
+        }
 
     }
 }

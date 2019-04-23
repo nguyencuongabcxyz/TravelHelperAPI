@@ -19,6 +19,7 @@ namespace TravelHelperProject.Services
         T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes);
         IEnumerable<T> GetAll(string[] includes);
         IEnumerable<T> GetMultiByCondition(Expression<Func<T, bool>> expression, string[] includes);
+        IEnumerable<T> GetMultiDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, string[] includes);
     }
     public class CommonService<T,R>: ICommonService<T> 
         where T: class 
@@ -64,6 +65,10 @@ namespace TravelHelperProject.Services
         {
             return _repository.GetMultiByCondition(expression, includes);
         }
-        
+        public IEnumerable<T> GetMultiDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, string[] includes)
+        {
+            return _repository.GetMultiDescByDate(expression, property, includes);
+        }
+
     }
 }

@@ -77,7 +77,7 @@ namespace TravelHelperProject.Controllers
                         new Claim("IsActive",(user.IsActive==null?true:user.IsActive).ToString()),
                         new Claim("IsDeleted",(user.IsDeleted==null?false:user.IsDeleted).ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddMinutes(100),
+                    Expires = DateTime.UtcNow.AddMinutes(10000),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -88,6 +88,39 @@ namespace TravelHelperProject.Controllers
             else
             {
                 return BadRequest(new { message = "Username or password is incorrect!" });
+            }
+        }
+        [HttpPut]
+        [Route("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            string userId;
+            try
+            {
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                return Unauthorized();
+            }
+            if(!await _userManager.CheckPasswordAsync(user, model.OldPassword))
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.NewPassword);
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return Unauthorized();
+                }
+                return Ok();
             }
         }
     }

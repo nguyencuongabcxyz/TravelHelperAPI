@@ -106,7 +106,7 @@ namespace TravelHelperProject
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors(builder =>
-            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+            builder.WithOrigins(Configuration["ApplicationSettings:Client_URL1"].ToString(), Configuration["ApplicationSettings:Client_URL"].ToString())
             .AllowAnyHeader()
             .AllowAnyMethod());
             app.UseAuthentication();

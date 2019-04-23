@@ -15,9 +15,11 @@ namespace TravelHelperProject.Controllers
     public class PublicTripsController : ControllerBase
     {
         private IPublicTripService _publicTripService;
-        public PublicTripsController(IPublicTripService publicTripService)
+        private IUserService _userService;
+        public PublicTripsController(IPublicTripService publicTripService, IUserService userService)
         {
             _publicTripService = publicTripService;
+            _userService = userService;
         }
         //TESTED
         //GET api/Publictrips
@@ -33,8 +35,9 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
+            var user = _userService.GetSingleByCondition(s => s.Id == userId,null);
             string[] includes = { "User" };
-            var publicTrips = _publicTripService.GetMultiByCondition(s => s.ApplicationUserId != userId && s.IsDeleted != true, includes).ToList();
+            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId != userId && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate,DateTime.Now)>=0 && user.Address.Equals(s.Destination),s =>s.ArrivalDate, includes).Take(5).ToList();
             return Ok(publicTrips);
         }
         //TESTED
@@ -53,7 +56,7 @@ namespace TravelHelperProject.Controllers
                 return Unauthorized();
             }
             string[] includes = { "User" };
-            var publicTrips = _publicTripService.GetMultiByCondition(s => s.ApplicationUserId != userId && s.Destination.Contains(destination) && s.IsDeleted != true, includes);
+            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId != userId && s.Destination.Contains(destination) && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate, DateTime.Now) >= 0, s => s.ArrivalDate, includes);
             return Ok(publicTrips);
         }
         //Untested on server
@@ -148,6 +151,10 @@ namespace TravelHelperProject.Controllers
                 return Unauthorized();
             }
             var publicTripById = _publicTripService.GetSingleByCondition(s => s.PublicTripId == id, null);
+            if(publicTripById == null)
+            {
+                return NotFound();
+            }
             if (publicTripById.ApplicationUserId != userId)
             {
                 return Unauthorized(new { message = "Not allow to delete other user's public trip!" });

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TravelHelperProject.Infrastructure;
 using TravelHelperProject.Models;
@@ -10,7 +11,6 @@ namespace TravelHelperProject.Services
 {
     public interface IPublicTripService: ICommonService<PublicTrip>
     {
-
     }
     public class PublicTripService: CommonService<PublicTrip, IPublicTripRepository>, IPublicTripService
     {
