@@ -8,9 +8,9 @@ namespace TravelHelperProject.Models
     public class TravelRequest
     {
         public int TravelRequestId { get; set; }
-        public DateTime? ArrivalTime { get; set; }
+        public DateTime? ArrivalDate { get; set; }
 
-        public DateTime? DepartureTime { get; set; }
+        public DateTime? DepartureDate { get; set; }
         public int? TravelerNumber { get; set; }
         public string Message { get; set; }
         public DateTime? CreateDate { get; set; }

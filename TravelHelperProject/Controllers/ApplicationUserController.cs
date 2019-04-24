@@ -110,7 +110,7 @@ namespace TravelHelperProject.Controllers
             }
             if(!await _userManager.CheckPasswordAsync(user, model.OldPassword))
             {
-                return Unauthorized();
+                return BadRequest();
             }
             else
             {

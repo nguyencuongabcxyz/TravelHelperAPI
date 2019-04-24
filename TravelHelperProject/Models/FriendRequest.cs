@@ -11,6 +11,7 @@ namespace TravelHelperProject.Models
         public DateTime? CreateDate { get; set; }
         public string Message { get; set; }
         public bool? IsAccepted { get; set; }
+        public bool? IsDeleted { get; set; }
         public ApplicationUser Sender { get; set; }
         public ApplicationUser Receiver { get; set; }
     }

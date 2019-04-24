@@ -39,4 +39,3 @@ D:\TravelHelperAPI\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProje
 D:\TravelHelperAPI\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.RazorTargetAssemblyInfo.cache
 D:\TravelHelperAPI\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.dll
 D:\TravelHelperAPI\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.pdb
-C:\Users\Admin\Desktop\TravelHelperProject\TravelHelperProject\TravelHelperProject\obj\Debug\netcoreapp2.2\TravelHelperProject.csprojAssemblyReference.cache

@@ -96,6 +96,10 @@ namespace TravelHelperProject
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IImageWriter, ImageWriter>();
             services.AddTransient<IImageFileService, ImageFileService>();
+            services.AddTransient<ITravelRequestRepository, TravelRequestRepository>();
+            services.AddTransient<ITravelRequestService, TravelRequestService>();
+            services.AddTransient<IHostOfferRepository, HostOfferRepository>();
+            services.AddTransient<IHostOfferService, HostOfferService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

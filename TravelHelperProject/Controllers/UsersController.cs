@@ -26,16 +26,23 @@ namespace TravelHelperProject.Controllers
         private IPublicTripService _publicTripService;
         private IHomeService _homeService;
         private IReferenceService _referenceService;
+        private ITravelRequestService _travelRequestService;
+        private IHostOfferService _hostOfferService;
 
-        public UsersController(IUserService userService, IImageFileService imageFileService, IBaseUrlHelper baseUrlHelper, IImageService imageService, IPublicTripService publicTripService, IHomeService homeService, IReferenceService referenceService)
+        public UsersController(IUserService userService, IImageFileService imageFileService, IBaseUrlHelper baseUrlHelper,
+            IImageService imageService, IPublicTripService publicTripService,
+            IHomeService homeService, IReferenceService referenceService,
+            ITravelRequestService travelRequestService, IHostOfferService hostOfferService)
         {
-            this._userService = userService;
-            this._imageFileService = imageFileService;
-            this._baseUrlHelper = baseUrlHelper;
-            this._imageService = imageService;
-            this._publicTripService = publicTripService;
-            this._homeService = homeService;
-            this._referenceService = referenceService;
+            _userService = userService;
+            _imageFileService = imageFileService;
+            _baseUrlHelper = baseUrlHelper;
+            _imageService = imageService;
+            _publicTripService = publicTripService;
+            _homeService = homeService;
+            _referenceService = referenceService;
+            _travelRequestService = travelRequestService;
+            _hostOfferService = hostOfferService;
         }
         //Untested 
         //GET api/Users
@@ -215,6 +222,34 @@ namespace TravelHelperProject.Controllers
             var references = _referenceService.GetMultiByCondition(s => s.Receiver.Id == id && s.IsDeleted != true, includes);
             return Ok(references);
         }
+
+        //TravelRequest section 
+        [HttpGet]
+        [Route("TravelRequests")]
+        public IActionResult GetUserTravelRequests()
+        {
+            string userId = GetUserId();
+            if (userId == "error")
+            {
+                return Unauthorized();
+            }
+            var travelRequests = _travelRequestService.GetMultiByCondition(s => s.Host.Id == userId && s.IsDeleted != true,new string[] {"Traveler"});
+            return Ok(travelRequests);
+        }
+        //HostOffer Section 
+        [HttpGet]
+        [Route("HostOffers")]
+        public IActionResult GetUserHostOffers()
+        {
+            string userId = GetUserId();
+            if (userId == "error")
+            {
+                return Unauthorized();
+            }
+            var hostOffers = _hostOfferService.GetMultiByCondition(s => s.Traveler.Id == userId && s.IsDeleted != true, new string[] { "Host" });
+            return Ok(hostOffers);
+        }
+
         [NonAction]
         public string GetUserId()
         {
