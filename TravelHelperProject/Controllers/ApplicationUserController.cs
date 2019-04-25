@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TravelHelperProject.Commons;
 using TravelHelperProject.Models;
+using TravelHelperProject.Services;
 
 namespace TravelHelperProject.Controllers
 {
@@ -24,18 +25,23 @@ namespace TravelHelperProject.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationSetting _appSettings;
         private IBaseUrlHelper _baseUrlHelper;
-        public ApplicationUserController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSetting> appSettings, IBaseUrlHelper baseUrlHelper)
+        private IHomeService _homeService;
+        public ApplicationUserController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IOptions<ApplicationSetting> appSettings, IBaseUrlHelper baseUrlHelper, IHomeService homeService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _roleManager = roleManager;
             _baseUrlHelper = baseUrlHelper;
+            _homeService = homeService;
         }
         [HttpPost]
         [Route("Register")]
         public async Task<object> PostApplicationUser(UserModel model)
         {
+            var home = new Home();
             var applicationUser = new ApplicationUser()
             {
                 UserName = model.UserName,
@@ -49,6 +55,9 @@ namespace TravelHelperProject.Controllers
             {
                 var result = await _userManager.CreateAsync(applicationUser, model.Password);
                 await _userManager.AddToRoleAsync(applicationUser, role.Name);
+                home.ApplicationUserId = applicationUser.Id;
+                _homeService.Add(home);
+                _homeService.SaveChanges();
                 return Ok(result);
             }
             catch (Exception ex)

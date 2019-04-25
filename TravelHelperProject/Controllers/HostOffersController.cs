@@ -41,8 +41,8 @@ namespace TravelHelperProject.Controllers
             {
                 return NotFound();
             }
-            hostOffer.Traveler = traveler;
-            hostOffer.Host = host;
+            hostOffer.Receiver = traveler;
+            hostOffer.Sender = host;
             _hostOfferService.Add(hostOffer);
             _hostOfferService.SaveChanges();
             return Ok();
@@ -62,12 +62,12 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var hostOffer = _hostOfferService.GetSingleById(id);
+            var hostOffer = _hostOfferService.GetSingleByCondition(s => s.HostOfferId == id, new string[] {"Receiver"});
             if (hostOffer == null)
             {
                 return NotFound();
             }
-            if(hostOffer.Traveler.Id != userId)
+            if(hostOffer.Receiver.Id != userId)
             {
                 return NotFound();
             }
@@ -89,12 +89,12 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var hostOffer = _hostOfferService.GetSingleById(id);
+            var hostOffer = _hostOfferService.GetSingleByCondition(s => s.HostOfferId == id, new string[] { "Receiver" });
             if (hostOffer == null)
             {
                 return NotFound();
             }
-            if (hostOffer.Traveler.Id != userId)
+            if (hostOffer.Receiver.Id != userId)
             {
                 return NotFound();
             }

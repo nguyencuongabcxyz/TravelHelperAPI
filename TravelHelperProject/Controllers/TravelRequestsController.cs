@@ -42,8 +42,8 @@ namespace TravelHelperProject.Controllers
             {
                 return NotFound();
             }
-            travelRequest.Traveler = traveler;
-            travelRequest.Host = host;
+            travelRequest.Sender = traveler;
+            travelRequest.Receiver = host;
             _travelRequestService.Add(travelRequest);
             _travelRequestService.SaveChanges();
             return Ok();
@@ -63,12 +63,12 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var travelRequest = _travelRequestService.GetSingleById(id);
+            var travelRequest = _travelRequestService.GetSingleByCondition(s => s.TravelRequestId == id, new string[] {"Receiver"} );
             if (travelRequest == null)
             {
                 return NotFound();
             }
-            if (travelRequest.Host.Id != userId)
+            if (travelRequest.Receiver.Id != userId)
             {
                 return Unauthorized();
             }
@@ -89,12 +89,12 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var travelRequest = _travelRequestService.GetSingleById(id);
+            var travelRequest = _travelRequestService.GetSingleByCondition(s => s.TravelRequestId == id, new string[] { "Receiver" });
             if (travelRequest == null)
             {
                 return NotFound();
             }
-            if (travelRequest.Host.Id != userId)
+            if (travelRequest.Receiver.Id != userId)
             {
                 return Unauthorized();
             }

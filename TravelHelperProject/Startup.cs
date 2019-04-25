@@ -100,6 +100,10 @@ namespace TravelHelperProject
             services.AddTransient<ITravelRequestService, TravelRequestService>();
             services.AddTransient<IHostOfferRepository, HostOfferRepository>();
             services.AddTransient<IHostOfferService, HostOfferService>();
+            services.AddTransient<IFriendRepository, FriendRepository>();
+            services.AddTransient<IFriendService, FriendService>();
+            services.AddTransient<IFriendRequestRepository, FriendRequestRepository>();
+            services.AddTransient<IFriendRequestService, FriendRequestService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

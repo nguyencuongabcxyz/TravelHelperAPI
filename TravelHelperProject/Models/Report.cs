@@ -14,7 +14,7 @@ namespace TravelHelperProject.Models
         public bool? IsDeleted { get; set; }
         public bool? IsSolved { get; set; }
 
-        public ApplicationUser Reporter { get; set; }
-        public ApplicationUser Violator { get; set; }
+        public ApplicationUser Sender { get; set; }
+        public ApplicationUser Receiver { get; set; }
     }
 }

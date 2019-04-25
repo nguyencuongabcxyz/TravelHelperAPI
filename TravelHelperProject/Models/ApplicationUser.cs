@@ -31,21 +31,21 @@ namespace TravelHelperProject.Models
         public ICollection<Photo> Photos { get; set; }
         public ICollection<PublicTrip> PublicTrips { get; set; }
 
-        [InverseProperty("Host")]
+        [InverseProperty("Sender")]
         public ICollection<HostOffer> HostOffersSent { get; set; }
-        [InverseProperty("Traveler")]
+        [InverseProperty("Receiver")]
         public ICollection<HostOffer> HostOfferReceived { get; set; }
         [InverseProperty("Sender")]
         public ICollection<Reference> ReferencesSent { get; set; }
         [InverseProperty("Receiver")]
         public ICollection<Reference> ReferenceReceived { get; set; }
-        [InverseProperty("Reporter")]
+        [InverseProperty("Sender")]
         public ICollection<Report> ReportsSent { get; set; }
-        [InverseProperty("Violator")]
+        [InverseProperty("Receiver")]
         public ICollection<Report> ReportsReceived { get; set; }
-        [InverseProperty("Traveler")]
+        [InverseProperty("Sender")]
         public ICollection<TravelRequest> TravelRequestsSent { get; set; }
-        [InverseProperty("Host")]
+        [InverseProperty("Receiver")]
         public ICollection<TravelRequest> TravelRequestsReceived { get; set; }
 
         [InverseProperty("Sender")]

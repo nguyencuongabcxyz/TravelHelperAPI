@@ -28,11 +28,13 @@ namespace TravelHelperProject.Controllers
         private IReferenceService _referenceService;
         private ITravelRequestService _travelRequestService;
         private IHostOfferService _hostOfferService;
+        private IFriendRequestService _friendRequestService;
 
         public UsersController(IUserService userService, IImageFileService imageFileService, IBaseUrlHelper baseUrlHelper,
             IImageService imageService, IPublicTripService publicTripService,
             IHomeService homeService, IReferenceService referenceService,
-            ITravelRequestService travelRequestService, IHostOfferService hostOfferService)
+            ITravelRequestService travelRequestService, IHostOfferService hostOfferService,
+            IFriendRequestService friendRequestService)
         {
             _userService = userService;
             _imageFileService = imageFileService;
@@ -43,6 +45,7 @@ namespace TravelHelperProject.Controllers
             _referenceService = referenceService;
             _travelRequestService = travelRequestService;
             _hostOfferService = hostOfferService;
+            _friendRequestService = friendRequestService;
         }
         //Untested 
         //GET api/Users
@@ -233,7 +236,7 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var travelRequests = _travelRequestService.GetMultiByCondition(s => s.Host.Id == userId && s.IsDeleted != true,new string[] {"Traveler"});
+            var travelRequests = _travelRequestService.GetMultiByCondition(s => s.Receiver.Id == userId && s.IsDeleted != true,new string[] {"Sender"});
             return Ok(travelRequests);
         }
         //HostOffer Section 
@@ -246,10 +249,22 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var hostOffers = _hostOfferService.GetMultiByCondition(s => s.Traveler.Id == userId && s.IsDeleted != true, new string[] { "Host" });
+            var hostOffers = _hostOfferService.GetMultiByCondition(s => s.Receiver.Id == userId && s.IsDeleted != true, new string[] { "Sender" });
             return Ok(hostOffers);
         }
 
+        [HttpGet]
+        [Route("FriendRequests")]
+        public IActionResult GetFriendRequests()
+        {
+            string userId = GetUserId();
+            if (userId == "error")
+            {
+                return Unauthorized();
+            }
+            var friendRequests = _friendRequestService.GetMultiByCondition(s => s.Receiver.Id == userId && s.IsDeleted != true, new string[] { "Sender" });
+            return Ok(friendRequests);
+        }
         [NonAction]
         public string GetUserId()
         {
