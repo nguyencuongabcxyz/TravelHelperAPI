@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,7 +60,6 @@ namespace TravelHelperProject
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
             });
-            services.AddCors();
             //Jwt Authentication
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
 
@@ -78,7 +78,26 @@ namespace TravelHelperProject
                     ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
                 };
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // If the request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/chat")))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
+            services.AddCors();
+            services.AddSignalR();
             services.AddHttpContextAccessor();
             services.AddSingleton<IBaseUrlHelper, BaseUrlHelper>();
             services.AddSingleton<IAddressList, AddressList>();
@@ -104,6 +123,13 @@ namespace TravelHelperProject
             services.AddTransient<IFriendService, FriendService>();
             services.AddTransient<IFriendRequestRepository, FriendRequestRepository>();
             services.AddTransient<IFriendRequestService, FriendRequestService>();
+            services.AddTransient<INotificationRepository, NotificationRepository>();
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IMessageSenderService, MessageSenderService>();
+            services.AddTransient<IReportRepository, ReportRepository>();
+            services.AddTransient<IReportService, ReportService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -116,8 +142,13 @@ namespace TravelHelperProject
             app.UseCors(builder =>
             builder.WithOrigins(Configuration["ApplicationSettings:Client_URL1"].ToString(), Configuration["ApplicationSettings:Client_URL"].ToString())
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod()
+            .AllowCredentials());
             app.UseAuthentication();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chat");
+            });
             app.UseStaticFiles();
             app.UseMvc();
         }

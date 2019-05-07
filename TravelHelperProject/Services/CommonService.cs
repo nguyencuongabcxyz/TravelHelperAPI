@@ -20,6 +20,8 @@ namespace TravelHelperProject.Services
         IEnumerable<T> GetAll(string[] includes);
         IEnumerable<T> GetMultiByCondition(Expression<Func<T, bool>> expression, string[] includes);
         IEnumerable<T> GetMultiDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, string[] includes);
+        IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, int index = 0, int size = 5, string[] includes = null);
+        IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 5, string[] includes = null);
     }
     public class CommonService<T,R>: ICommonService<T> 
         where T: class 
@@ -69,6 +71,13 @@ namespace TravelHelperProject.Services
         {
             return _repository.GetMultiDescByDate(expression, property, includes);
         }
-
+        public IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, int index = 0, int size = 5, string[] includes = null)
+        {
+            return _repository.GetMultiPaging(expression, index, size, includes);
+        }
+        public IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 5, string[] includes = null)
+        {
+            return _repository.GetMultiPagingDescByDate(expression, property, index, size, includes);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace TravelHelperProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PublicTripsController : ControllerBase
     {
         private IPublicTripService _publicTripService;
@@ -37,7 +39,11 @@ namespace TravelHelperProject.Controllers
             }
             var user = _userService.GetSingleByCondition(s => s.Id == userId,null);
             string[] includes = { "User" };
-            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId != userId && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate,DateTime.Now)>=0 && user.Address.Equals(s.Destination),s =>s.ArrivalDate, includes).Take(5).ToList();
+            if(user.Address == null)
+            {
+                return Ok(new List<PublicTrip>());
+            }
+            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId != userId && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate,DateTime.Now)>=0 && s.Destination.Equals(user.Address),s =>s.ArrivalDate, includes).Take(5).ToList();
             return Ok(publicTrips);
         }
         //TESTED

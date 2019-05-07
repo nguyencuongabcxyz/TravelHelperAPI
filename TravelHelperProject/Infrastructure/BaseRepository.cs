@@ -94,7 +94,47 @@ namespace TravelHelperProject.DataAccess
                 }
                 return query.Where<T>(expression).OrderByDescending(property).AsQueryable();
             }
-            return TravelHelperContext.Set<T>().OrderByDescending(property).Where<T>(expression).AsQueryable();
+            return TravelHelperContext.Set<T>().OrderBy(property).Where<T>(expression).AsQueryable();
+        }
+        public virtual IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, int index = 0, int size = 5, string[] includes = null)
+        {
+            var skipCount = index * size;
+            IQueryable<T> _resetSet = null;
+            if(includes != null && includes.Count() > 0)
+            {
+                var query = TravelHelperContext.Set<T>().Include(includes.First());
+                foreach(string i in includes.Skip(1))
+                {
+                    query = query.Include(i);
+                }
+                _resetSet = expression != null ? query.Where<T>(expression).AsQueryable() : query.AsQueryable();
+            }
+            else
+            {
+                _resetSet = expression != null ? TravelHelperContext.Set<T>().Where<T>(expression).AsQueryable() : TravelHelperContext.Set<T>().AsQueryable();
+            }
+            _resetSet = index == 0 ? _resetSet.Take(size) : _resetSet.Skip(skipCount).Take(size);
+            return _resetSet.AsQueryable();
+        }
+        public virtual IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 5, string[] includes = null)
+        {
+            var skipCount = index * size;
+            IQueryable<T> _resetSet = null;
+            if (includes != null && includes.Count() > 0)
+            {
+                var query = TravelHelperContext.Set<T>().Include(includes.First());
+                foreach (string i in includes.Skip(1))
+                {
+                    query = query.Include(i);
+                }
+                _resetSet = expression != null ? query.Where<T>(expression).OrderByDescending(property).AsQueryable() : query.OrderByDescending(property).AsQueryable();
+            }
+            else
+            {
+                _resetSet = expression != null ? TravelHelperContext.Set<T>().Where<T>(expression).OrderByDescending(property).AsQueryable() : TravelHelperContext.Set<T>().OrderByDescending(property).AsQueryable();
+            }
+            _resetSet = index == 0 ? _resetSet.Take(size) : _resetSet.Skip(skipCount).Take(size);
+            return _resetSet.AsQueryable();
         }
     }
 }

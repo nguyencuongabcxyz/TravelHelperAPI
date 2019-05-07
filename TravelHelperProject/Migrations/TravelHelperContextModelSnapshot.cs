@@ -277,6 +277,8 @@ namespace TravelHelperProject.Migrations
 
                     b.Property<bool?>("IsAccepted");
 
+                    b.Property<bool?>("IsCanceled");
+
                     b.Property<bool?>("IsDeleted");
 
                     b.Property<string>("Message");
@@ -341,6 +343,8 @@ namespace TravelHelperProject.Migrations
 
                     b.Property<bool?>("IsAccepted");
 
+                    b.Property<bool?>("IsCanceled");
+
                     b.Property<bool?>("IsDeleted");
 
                     b.Property<string>("Message");
@@ -381,6 +385,31 @@ namespace TravelHelperProject.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("TravelHelperProject.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool?>("IsDeleted");
+
+                    b.Property<string>("ReceiverId");
+
+                    b.Property<string>("SenderId");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("TravelHelperProject.Models.Photo", b =>
@@ -510,6 +539,8 @@ namespace TravelHelperProject.Migrations
                     b.Property<DateTime?>("DepartureDate");
 
                     b.Property<bool?>("IsAccepted");
+
+                    b.Property<bool?>("IsCanceled");
 
                     b.Property<bool?>("IsDeleted");
 
@@ -674,6 +705,17 @@ namespace TravelHelperProject.Migrations
 
                     b.HasOne("TravelHelperProject.Models.ApplicationUser", "Sender")
                         .WithMany("MessagesSent")
+                        .HasForeignKey("SenderId");
+                });
+
+            modelBuilder.Entity("TravelHelperProject.Models.Notification", b =>
+                {
+                    b.HasOne("TravelHelperProject.Models.ApplicationUser", "Receiver")
+                        .WithMany("ReceivedNotifications")
+                        .HasForeignKey("ReceiverId");
+
+                    b.HasOne("TravelHelperProject.Models.ApplicationUser", "Sender")
+                        .WithMany("SentNotifications")
                         .HasForeignKey("SenderId");
                 });
 

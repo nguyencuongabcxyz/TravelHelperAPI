@@ -60,5 +60,9 @@ namespace TravelHelperProject.Models
         public ICollection<Friend> FriendsUser1 { get; set; }
         [InverseProperty("ApplicationUser2")]
         public ICollection<Friend> FriendsUser2 { get; set; }
+        [InverseProperty("Sender")]
+        public ICollection<Notification> SentNotifications { get; set; }
+        [InverseProperty("Receiver")]
+        public ICollection<Notification> ReceivedNotifications { get; set; }
     }
 }

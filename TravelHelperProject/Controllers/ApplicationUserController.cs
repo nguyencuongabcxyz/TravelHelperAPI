@@ -41,6 +41,7 @@ namespace TravelHelperProject.Controllers
         [Route("Register")]
         public async Task<object> PostApplicationUser(UserModel model)
         {
+            model.Role = "User";
             var home = new Home();
             var applicationUser = new ApplicationUser()
             {
@@ -49,15 +50,16 @@ namespace TravelHelperProject.Controllers
                 FullName = model.FullName,
                 AvatarLocation = _baseUrlHelper.GetBaseUrl() + "/Images/defaultAvatar.png",
             };
-            var role = new IdentityRole("User");
-            await _roleManager.CreateAsync(role);
             try
             {
                 var result = await _userManager.CreateAsync(applicationUser, model.Password);
-                await _userManager.AddToRoleAsync(applicationUser, role.Name);
-                home.ApplicationUserId = applicationUser.Id;
-                _homeService.Add(home);
-                _homeService.SaveChanges();
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(applicationUser, model.Role);
+                    home.ApplicationUserId = applicationUser.Id;
+                    _homeService.Add(home);
+                    _homeService.SaveChanges();
+                }
                 return Ok(result);
             }
             catch (Exception ex)
@@ -78,11 +80,14 @@ namespace TravelHelperProject.Controllers
                 {
                     return NotFound(new { message = "This user is blocked!" });
                 }
+                var role = await _userManager.GetRolesAsync(user);
+                IdentityOptions _options = new IdentityOptions();
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
+                        new Claim("Name",user.UserName.ToString()),
                         new Claim("UserID",user.Id.ToString()),
-                        new Claim("Role",_userManager.GetRolesAsync(user).Result[0]),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault()),
                         new Claim("IsActive",(user.IsActive==null?true:user.IsActive).ToString()),
                         new Claim("IsDeleted",(user.IsDeleted==null?false:user.IsDeleted).ToString())
                     }),

@@ -6,19 +6,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TravelHelperProject.Services;
 using TravelHelperProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TravelHelperProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReferencesController : ControllerBase
     {
         private IReferenceService _referenceService;
         private IUserService _userService;
-        public ReferencesController(IReferenceService referenceService, IUserService userService)
+        private INotificationService _notificationService;
+        public ReferencesController(IReferenceService referenceService, IUserService userService, INotificationService notificationService)
         {
             _referenceService = referenceService;
             _userService = userService;
+            _notificationService = notificationService;
         }
         [HttpPost]
         [Route("{id}")]
@@ -41,6 +45,13 @@ namespace TravelHelperProject.Controllers
             }
             reference.CreateDate = DateTime.Now;
             _referenceService.Add(reference);
+            var notification = new Notification()
+            {
+                Type = NotificationType.Reference,
+                Sender = reference.Sender,
+                Receiver = reference.Receiver,
+            };
+            _notificationService.Add(notification);
             _referenceService.SaveChanges();
             return Ok(reference);
         }

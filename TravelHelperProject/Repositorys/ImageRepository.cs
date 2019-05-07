@@ -10,7 +10,6 @@ namespace TravelHelperProject.Repositorys
 {
     public interface IImageRepository: IBaseRepository<Photo>
     {
-
     }
     public class ImageRepository: BaseRepository<Photo>, IImageRepository
     {
