@@ -17,6 +17,7 @@ namespace TravelHelperProject.DataAccess
         IEnumerable<T> GetMultiByCondition(Expression<Func<T, bool>> expression, string[] includes);
         IEnumerable<T> GetMultiDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, string[] includes);
         IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, int index = 0, int size = 5, string[] includes = null);
-        IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 5, string[] includes = null);
+        IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 10, string[] includes = null);
+        int GetCount(Expression<Func<T, bool>> expression);
     }
 }

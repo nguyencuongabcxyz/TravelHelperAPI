@@ -32,7 +32,7 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var friend = _friendService.GetSingleByCondition(s => (s.ApplicationUser1.Id == userId && s.ApplicationUser2.Id == id) || (s.ApplicationUser2.Id == userId && s.ApplicationUser1.Id == id), null);
+            var friend = _friendService.GetSingleByCondition(s => ((s.ApplicationUser1.Id == userId && s.ApplicationUser2.Id == id) || (s.ApplicationUser2.Id == userId && s.ApplicationUser1.Id == id)) && s.IsDeleted != true, null);
             if(friend == null)
             {
                 return Ok(new { isFriend = false });

@@ -39,7 +39,7 @@ namespace TravelHelperProject.Controllers
             {
                 return Unauthorized();
             }
-            var currentFriendRequest = _friendRequestService.GetSingleByCondition(s => s.Sender.Id == userId && s.Receiver.Id == id && s.IsCanceled != true,null);
+            var currentFriendRequest = _friendRequestService.GetSingleByCondition(s => s.Sender.Id == userId && s.Receiver.Id == id && s.IsCanceled != true && s.IsAccepted !=true,null);
             if (currentFriendRequest != null)
             {
                 return BadRequest(new { message = "You have already sent request to this person!" });
@@ -95,6 +95,7 @@ namespace TravelHelperProject.Controllers
             _friendRequestService.SaveChanges();
             return Ok(friendRequest);
         }
+
         [HttpDelete("{id}")]
         public IActionResult IgnoreFriendRequest(int id)
         {
@@ -120,6 +121,7 @@ namespace TravelHelperProject.Controllers
             _friendRequestService.SaveChanges();
             return NoContent();
         }
+
         [HttpPut("CancelRequest/{id}")]
         public IActionResult CancelRequest(int id)
         {

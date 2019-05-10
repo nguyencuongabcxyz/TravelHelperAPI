@@ -36,8 +36,8 @@ namespace TravelHelperProject.Commons
             };
             _messageService.Add(messageEntity);
             _messageService.SaveChanges();
-            await Clients.Groups(userId).SendAsync("sendChatMessage",userId,message);
-            await Clients.Groups(to).SendAsync("sendChatMessage", userId, message);
+            await Clients.Groups(userId).SendAsync("sendChatMessage",userId,sender.FullName,sender.AvatarLocation,message);
+            await Clients.Groups(to).SendAsync("sendChatMessage", userId, sender.FullName, sender.AvatarLocation, message);
         }
         public override Task OnConnectedAsync()
         {

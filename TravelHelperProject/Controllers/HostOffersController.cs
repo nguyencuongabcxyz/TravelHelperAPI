@@ -123,7 +123,7 @@ namespace TravelHelperProject.Controllers
             _hostOfferService.SaveChanges();
             return NoContent();
         }
-        [HttpPut("CancelOffer{id}")]
+        [HttpPut("CancelOffer/{id}")]
         public IActionResult CancelHostOffer(int id)
         {
             string userId;

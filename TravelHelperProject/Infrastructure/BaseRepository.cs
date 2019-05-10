@@ -96,7 +96,7 @@ namespace TravelHelperProject.DataAccess
             }
             return TravelHelperContext.Set<T>().OrderBy(property).Where<T>(expression).AsQueryable();
         }
-        public virtual IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, int index = 0, int size = 5, string[] includes = null)
+        public virtual IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> expression, int index = 0, int size = 14, string[] includes = null)
         {
             var skipCount = index * size;
             IQueryable<T> _resetSet = null;
@@ -116,7 +116,7 @@ namespace TravelHelperProject.DataAccess
             _resetSet = index == 0 ? _resetSet.Take(size) : _resetSet.Skip(skipCount).Take(size);
             return _resetSet.AsQueryable();
         }
-        public virtual IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 5, string[] includes = null)
+        public virtual IEnumerable<T> GetMultiPagingDescByDate(Expression<Func<T, bool>> expression, Expression<Func<T, DateTime?>> property, int index = 0, int size = 10, string[] includes = null)
         {
             var skipCount = index * size;
             IQueryable<T> _resetSet = null;
@@ -135,6 +135,10 @@ namespace TravelHelperProject.DataAccess
             }
             _resetSet = index == 0 ? _resetSet.Take(size) : _resetSet.Skip(skipCount).Take(size);
             return _resetSet.AsQueryable();
+        }
+        public int GetCount(Expression<Func<T, bool>> expression)
+        {
+            return expression == null ? TravelHelperContext.Set<T>().Count():TravelHelperContext.Set<T>().Where(expression).Count();
         }
     }
 }

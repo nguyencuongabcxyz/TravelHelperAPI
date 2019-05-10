@@ -118,17 +118,17 @@ namespace TravelHelperProject.Controllers
         //GET: api/Users/Search?address=address
         [HttpGet]
         [Route("Search")]
-        public IActionResult GetUserByAddress(string address)
+        public IActionResult GetUserByAddress(string address,int index, int size = 14)
         {
-            var users = _userService.GetMultiByCondition(s => s.Address.Contains(address), null);
+            var users = _userService.GetMultiPaging(s => s.Address.Contains(address) && s.IsActive != false, index, size, null);
             return Ok(users);
         }
 
         [HttpGet]
         [Route("SearchByName")]
-        public IActionResult GetUserByName(string name)
+        public IActionResult GetUserByName(string name,int index, int size = 14)
         {
-            var users = _userService.GetMultiByCondition(s => s.FullName.Contains(name), null);
+            var users = _userService.GetMultiPaging(s => s.FullName.Contains(name) && s.IsActive != false, index, size, null);
             return Ok(users);
         }
         //Untested
@@ -328,7 +328,7 @@ namespace TravelHelperProject.Controllers
                 return Unauthorized();
             }
             var friendList = new List<ApplicationUser>();
-            var friends = _friendService.GetMultiByCondition(s => s.ApplicationUser1.Id == userId || s.ApplicationUser2.Id == userId && s.IsDeleted != true, new string[] {"ApplicationUser1","ApplicationUser2"});
+            var friends = _friendService.GetMultiByCondition(s => (s.ApplicationUser1.Id == userId || s.ApplicationUser2.Id == userId) && s.IsDeleted != true, new string[] {"ApplicationUser1","ApplicationUser2"});
             foreach(Friend i in friends)
             {
                 if(i.ApplicationUser1.Id == userId)
@@ -346,25 +346,25 @@ namespace TravelHelperProject.Controllers
         }
 
         [HttpGet("MessageSenders")]
-        public IActionResult GetMessageSenders(int index)
+        public IActionResult GetMessageSenders(int index,int size)
         {
             string userId = GetUserId();
             if (userId == "error")
             {
                 return Unauthorized();
             }
-            var senders = _messageSenderService.GetMessageSenders(userId,index);
+            var senders = _messageSenderService.GetMessageSenders(userId, index, size);
             return Ok(senders);
         }
         [HttpGet("Messages/{id}")]
-        public IActionResult GetMessages(string id,int index)
+        public IActionResult GetMessages(string id,int index, int size)
         {
             string userId = GetUserId();
             if (userId == "error")
             {
                 return Unauthorized();
             }
-            var messages = _messageService.GetMessagesPaging(s => (s.Sender.Id == userId && s.Receiver.Id == id) || (s.Receiver.Id == userId && s.Sender.Id == id), index,10,new string[] {"Sender","Receiver"});
+            var messages = _messageService.GetMessagesPaging(s => (s.Sender.Id == userId && s.Receiver.Id == id) || (s.Receiver.Id == userId && s.Sender.Id == id), index, size,new string[] {"Sender","Receiver"});
             var result = new List<MessageViewModel>();
             foreach(Message i in messages)
             {
@@ -413,6 +413,44 @@ namespace TravelHelperProject.Controllers
             _userService.Update(user);
             _userService.SaveChanges();
             return Ok(user);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("BannedUsers")]
+        public IActionResult GetBannedUsers(int index, int size)
+        {
+            var userBanned = _userService.GetMultiPaging(s => s.IsActive == false, index, size = 10);
+            return Ok(userBanned);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("UserQuantity")]
+        public IActionResult GetUserQuantity()
+        {
+            return Ok(new { quantity = _userService.GetCount(null) });
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("BannedQuantity")]
+        public IActionResult GetBannedUserQuantity()
+        {
+            return Ok(new { quantity = _userService.GetCount(s => s.IsActive == false) });
+        }
+        [HttpPut("CancelFriend/{id}")]
+        public IActionResult CancelFriend(string id)
+        {
+            string userId = GetUserId();
+            if (userId == "error")
+            {
+                return Unauthorized();
+            }
+            var user = _userService.GetSingleByCondition(s => s.Id == id, null);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var friend = _friendService.GetSingleByCondition(s => ((s.ApplicationUser1.Id == userId && s.ApplicationUser2.Id == id) || (s.ApplicationUser2.Id == userId && s.ApplicationUser1.Id == id)) && s.IsDeleted !=true , null);
+            friend.IsDeleted = true;
+            _friendService.Update(friend);
+            _friendService.SaveChanges();
+            return NoContent();           
         }
         [NonAction]
         public string GetUserId()

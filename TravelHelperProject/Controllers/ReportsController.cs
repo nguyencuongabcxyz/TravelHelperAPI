@@ -78,10 +78,16 @@ namespace TravelHelperProject.Controllers
         }
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult GetUserReports(int index)
+        public IActionResult GetUserReports(int index, int size)
         {
-            var reports = _reportService.GetMultiPagingDescByDate(s => s.IsDeleted != true, s => s.CreateDate, index, 10, new string[] { "Receiver", "Sender" });
+            var reports = _reportService.GetMultiPagingDescByDate(s => s.IsDeleted != true, s => s.CreateDate, index, size = 10, new string[] { "Receiver", "Sender" });
             return Ok(reports);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("ReportQuantity")]
+        public IActionResult GetReportQuantity()
+        {
+            return Ok(new { quantity = _reportService.GetCount(s => s.IsDeleted != true) });
         }
 
     }

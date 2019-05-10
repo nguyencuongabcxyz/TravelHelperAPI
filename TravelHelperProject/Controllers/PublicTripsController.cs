@@ -50,7 +50,7 @@ namespace TravelHelperProject.Controllers
         //GET api/Publictrips/Search?destination=destination
         [HttpGet]
         [Route("Search")]
-        public IActionResult GetPublicTripsByDestination(string destination)
+        public IActionResult GetPublicTripsByDestination(string destination, int index, int size = 14)
         {
             string userId;
             try
@@ -62,7 +62,7 @@ namespace TravelHelperProject.Controllers
                 return Unauthorized();
             }
             string[] includes = { "User" };
-            var publicTrips = _publicTripService.GetMultiDescByDate(s => s.ApplicationUserId != userId && s.Destination.Contains(destination) && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate, DateTime.Now) >= 0, s => s.ArrivalDate, includes);
+            var publicTrips = _publicTripService.GetMultiPagingDescByDate(s => s.ApplicationUserId != userId && s.Destination.Contains(destination) && s.IsDeleted != true && DateTime.Compare((DateTime)s.ArrivalDate, DateTime.Now) >= 0, s => s.ArrivalDate, index, size, includes);
             return Ok(publicTrips);
         }
         //Untested on server
